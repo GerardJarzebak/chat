@@ -54,6 +54,12 @@
 
 #include <QMainWindow>
 #include <QMqttClient>
+#include "QtSql"
+#include <user.h>
+#include <editaccountdetailswindow.h>
+#include "QListWidgetItem"
+#include "QBuffer"
+
 
 namespace Ui {
 class MainWindow;
@@ -69,21 +75,63 @@ public:
 
 public slots:
     void setClientPort(int p);
+    void setUser(user * user);
+    user* getUser();
+    void setUser2(user * user);
+    user* getUser2();
+    Ui::MainWindow * getUI();
+    void setADW( editaccountdetailswindow * adw);
+    editaccountdetailswindow * getADW();
+    void setEmojiList();
+    QString getTopic();
+    void setTopic();
+    user* getUserFromDB(QString username);
 
 private slots:
-    void on_buttonConnect_clicked();
-    void on_buttonQuit_clicked();
+
+
     void updateLogStateChange();
+
+    void on_RemoveFriendButton_clicked();
+
+    void on_addFriendButton_clicked();
+
+    void on_attachFileButton_clicked();
+
+    void on_accountDetailsButton_clicked();
+
+    void on_searchButton_clicked();
 
     void brokerDisconnected();
 
-    void on_buttonPublish_clicked();
+    void on_changeAvatarButton_clicked();
+
+    void on_emojiList_itemClicked(QListWidgetItem *item);
+
+    void on_friendsList_itemDoubleClicked(QListWidgetItem *item);
+
+
+
+    void subcribe();
+
+    void connectToTopic();
+
+    void on_sendButton_clicked();
+
+    void on_quitButton_clicked();
+
+    void on_buttonConnect_clicked();
 
     void on_buttonSubscribe_clicked();
 
 private:
     Ui::MainWindow *ui;
     QMqttClient *m_client;
+    user *u;
+    user *u2;
+    editaccountdetailswindow * adw;
+    QString topic;
+
 };
 
 #endif // MAINWINDOW_H

@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>images/chatAppBackground.jpg</file>
+        <file>images/original.png</file>
+        <file>images/images.jpeg</file>
+        <file>images/bluebg.png</file>
+    </qresource>
+</RCC>
