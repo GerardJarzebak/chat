@@ -309,28 +309,6 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>373</x>
-      <y>28</y>
-      <width>461</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_6">
-     <item>
-      <widget class="QLabel" name="searchHistoryLabel">
-       <property name="text">
-        <string>Search message history : </string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="searchMessageButton"/>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
       <x>374</x>
       <y>4</y>
       <width>461</width>
@@ -394,7 +372,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>31</x>
@@ -428,6 +406,35 @@
         </widget>
        </item>
       </layout>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>374</x>
+      <y>29</y>
+      <width>461</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <item>
+      <widget class="QLabel" name="searchHistoryLabel">
+       <property name="text">
+        <string>Search message history : </string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="searchMessageButton"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="searchButton_2">
+       <property name="text">
+        <string>Search</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>

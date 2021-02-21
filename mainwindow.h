@@ -56,10 +56,12 @@
 #include <QMqttClient>
 #include "QtSql"
 #include <topic.h>
+#include "searchresultswindow.h"
 #include <user.h>
 #include <editaccountdetailswindow.h>
 #include "QListWidgetItem"
 #include "QBuffer"
+
 
 
 namespace Ui {
@@ -134,6 +136,8 @@ private slots:
 
     void on_descSortButton_clicked();
 
+    void on_searchButton_2_clicked();
+
 private:
     Ui::MainWindow *ui;
     QMqttClient *m_client;
@@ -141,6 +145,7 @@ private:
     user *u2;
     editaccountdetailswindow * adw;
     topic *currenttopic;
+    searchresultswindow * srw;
 
 };
 

@@ -9,6 +9,7 @@ registerwindow::registerwindow(QWidget *parent) :
     this->setFixedSize(1280,720);
     ui->usernameRegister->setPlaceholderText("Enter your username");
     ui->passwordRegister->setPlaceholderText("Enter your password");
+    ui->passwordRegister->setEchoMode(QLineEdit::Password);
     ui->passwordRegister2->setPlaceholderText("Repeat your password");
     ui->emailRegister->setPlaceholderText("Enter your email");
 

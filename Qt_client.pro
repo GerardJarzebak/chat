@@ -7,9 +7,9 @@ CONFIG += c++17
 HEADERS = \
    $$PWD/mainwindow.h \
    $$PWD/loginwindow.h \
-   database.h \
    editaccountdetailswindow.h \
    registerwindow.h \
+   searchresultswindow.h \
    topic.h \
    user.h
 
@@ -17,9 +17,9 @@ SOURCES = \
    $$PWD/main.cpp \
    $$PWD/mainwindow.cpp \
    $$PWD/loginwindow.cpp \
-   database.cpp \
    editaccountdetailswindow.cpp \
    registerwindow.cpp \
+   searchresultswindow.cpp \
    topic.cpp \
    user.cpp
 
@@ -27,7 +27,8 @@ FORMS = \
    $$PWD/mainwindow.ui \
    $$PWD/loginwindow.ui \
    editaccountdetailswindow.ui \
-   registerwindow.ui
+   registerwindow.ui \
+   searchresultswindow.ui
 
 
 INCLUDEPATH = \

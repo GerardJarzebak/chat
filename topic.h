@@ -23,6 +23,20 @@ public:
     QString getUsername1();
     QString getUsername2();
 
+    QString &getPastMessageHistoryAsString();
+    void setPastMessageHistoryWithString(QString s);
+    void setPastMessageHistory(QStringList sl);
+    QStringList getPastMessageHistory();
+
+    void setMessageDatesHistoryAsString(QString s);
+    void setMessageDatesHistory(QStringList sl);
+    void setPastMessageDatesHistoryAsString(QString s);
+    void setPastMessageDateseHistory(QStringList sl);
+    QStringList getPastMessageDatesHistory();
+    QString &getPastMessageDatesHistoryAsString();
+    QStringList getMessageDatesHistory();
+    QString &getMessageDatesHistoryAsString();
+
 
 
 private:
@@ -32,6 +46,13 @@ private:
     int topicID;
     QString username1;
     QString username2;
+    QStringList pastMessageHistory;
+    QString pastMessageHistoryAsString;
+
+    QStringList messageDatesHistory;
+    QString messageDatesHistoryAsString;
+    QStringList pastMessageDateseHistory;
+    QString pastMessageDatesHistoryAsString;
 };
 
 #endif // TOPIC_H

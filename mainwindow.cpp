@@ -13,6 +13,7 @@
 
 
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -41,6 +42,8 @@ MainWindow::MainWindow(QWidget *parent) :
         const QString content = this->getUser()->getUsername()
                     + QLatin1String(": ")
                     + message
+                    + "| Sent on : "
+                    + QDateTime::currentDateTime().toString()
                     + QLatin1Char('\n');
         ui->editLog->insertPlainText(content);
     });
@@ -197,6 +200,7 @@ void MainWindow::on_sendButton_clicked()
              QString message = ui->lineEditMessage->text();
              this->currenttopic->getMessageHistory().append(this->getUser()->getUsername() + " : " + message);
              this->currenttopic->getMessageHistoryAsString().append(this->getUser()->getUsername() + " : " + message +",");
+             ui->lineEditMessage->clear();
 
         }
 
@@ -411,8 +415,11 @@ void MainWindow::on_accountDetailsButton_clicked()
 {
     //editaccountdetailswindow * adw = new editaccountdetailswindow(this,this->getUser());
 
-    this->adw = new editaccountdetailswindow(this,this->getUser());
-    this->adw->show();
+    adw = new editaccountdetailswindow(this,this->getUser());
+    adw->show();
+
+
+
 
 }
 
@@ -494,10 +501,10 @@ void MainWindow::loadChatHistory(topic * t) {
         QString user2FromDb = query.value(3).toString();
         QString topicmessagesFromDB = query.value(4).toString();
 
-        //t -> getMessageHistoryAsString().append(topicmessagesFromDB);
+        t -> getPastMessageHistoryAsString().append(topicmessagesFromDB);
 
         for (QString s: topicmessagesFromDB.split(",")) {
-          //t -> getMessageHistory().append(s);
+          t -> getPastMessageHistory().append(s);
           ui -> editLog -> insertPlainText(s);
           ui -> editLog -> insertPlainText("\n");
 
@@ -805,4 +812,23 @@ void MainWindow::on_descSortButton_clicked()
     }else{
         QMessageBox::information(this, "Wait a minute", "Please select the chat to sort first :)");
     }
+}
+
+
+void MainWindow::on_searchButton_2_clicked()
+{
+
+    if(this->currenttopic != nullptr && !this->getUI()->searchMessageButton->text().isEmpty())
+    {
+        srw = new searchresultswindow(this,this->currenttopic,this->getUI()->searchMessageButton->text());
+
+        srw->show();
+
+    }else
+    {
+              QMessageBox::information(this, "Wait a minute", "Please select the chat to sort messages from first :) :)");
+    }
+
+
+
 }

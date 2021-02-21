@@ -21,7 +21,8 @@
 {
  
 	
-	background-color: rgb(239, 41, 41);
+	
+	background-image: url(:/images/images/bluebg.png);
 }</string>
   </property>
   <widget class="QPushButton" name="backButton">
@@ -40,11 +41,20 @@
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>490</x>
-     <y>150</y>
+     <x>240</x>
+     <y>140</y>
      <width>731</width>
      <height>361</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_4">
     <item>
@@ -52,13 +62,18 @@
       <property name="font">
        <font>
         <pointsize>20</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
        </font>
       </property>
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
       <property name="styleSheet">
-       <string notr="true">#label
-{
-	background-color: rgb(239, 41, 41);
-}</string>
+       <string notr="true"/>
+      </property>
+      <property name="lineWidth">
+       <number>0</number>
       </property>
       <property name="text">
        <string>CHANGE YOUR DETAILS </string>
@@ -78,6 +93,18 @@
            <layout class="QGridLayout" name="gridLayout">
             <item row="1" column="0">
              <widget class="QLabel" name="label_9">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="autoFillBackground">
+               <bool>true</bool>
+              </property>
+              <property name="lineWidth">
+               <number>0</number>
+              </property>
               <property name="text">
                <string>Enter new email :         </string>
               </property>
@@ -85,6 +112,18 @@
             </item>
             <item row="0" column="1">
              <widget class="QLabel" name="emailLabel">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="autoFillBackground">
+               <bool>true</bool>
+              </property>
+              <property name="lineWidth">
+               <number>0</number>
+              </property>
               <property name="text">
                <string>TextLabel</string>
               </property>
@@ -94,10 +133,32 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QLineEdit" name="newEmailEnter"/>
+             <widget class="QLineEdit" name="newEmailEnter">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="autoFillBackground">
+               <bool>true</bool>
+              </property>
+             </widget>
             </item>
             <item row="0" column="0">
              <widget class="QLabel" name="label_3">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="autoFillBackground">
+               <bool>true</bool>
+              </property>
+              <property name="lineWidth">
+               <number>0</number>
+              </property>
               <property name="text">
                <string>Current email :</string>
               </property>
@@ -107,6 +168,15 @@
           </item>
           <item>
            <widget class="QPushButton" name="changeEmailButton">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="autoFillBackground">
+             <bool>true</bool>
+            </property>
             <property name="text">
              <string>Change email</string>
             </property>
@@ -120,6 +190,18 @@
            <layout class="QGridLayout" name="gridLayout_3">
             <item row="0" column="0">
              <widget class="QLabel" name="label_2">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="autoFillBackground">
+               <bool>true</bool>
+              </property>
+              <property name="lineWidth">
+               <number>0</number>
+              </property>
               <property name="text">
                <string> Current username : </string>
               </property>
@@ -127,6 +209,18 @@
             </item>
             <item row="0" column="1" colspan="2">
              <widget class="QLabel" name="usernameLabel">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="autoFillBackground">
+               <bool>true</bool>
+              </property>
+              <property name="lineWidth">
+               <number>0</number>
+              </property>
               <property name="text">
                <string>                  TextLabel</string>
               </property>
@@ -134,18 +228,49 @@
             </item>
             <item row="1" column="0" colspan="2">
              <widget class="QLabel" name="label_8">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="autoFillBackground">
+               <bool>true</bool>
+              </property>
+              <property name="lineWidth">
+               <number>0</number>
+              </property>
               <property name="text">
                <string>Enter new username : </string>
               </property>
              </widget>
             </item>
             <item row="1" column="2">
-             <widget class="QLineEdit" name="newUsernameEnter"/>
+             <widget class="QLineEdit" name="newUsernameEnter">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="autoFillBackground">
+               <bool>true</bool>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
           <item>
            <widget class="QPushButton" name="changeUsernameButton">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="autoFillBackground">
+             <bool>true</bool>
+            </property>
             <property name="text">
              <string>Change username</string>
             </property>
@@ -157,13 +282,46 @@
       </item>
       <item>
        <widget class="QSplitter" name="splitter_2">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="autoFillBackground">
+         <bool>true</bool>
+        </property>
+        <property name="lineWidth">
+         <number>0</number>
+        </property>
         <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
         <widget class="QWidget" name="layoutWidget">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="autoFillBackground">
+          <bool>true</bool>
+         </property>
          <layout class="QGridLayout" name="gridLayout_2">
           <item row="1" column="0">
            <widget class="QLabel" name="label_6">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="autoFillBackground">
+             <bool>true</bool>
+            </property>
+            <property name="lineWidth">
+             <number>0</number>
+            </property>
             <property name="text">
              <string>Enter new password</string>
             </property>
@@ -171,30 +329,93 @@
           </item>
           <item row="0" column="0">
            <widget class="QLabel" name="label_5">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="autoFillBackground">
+             <bool>true</bool>
+            </property>
+            <property name="lineWidth">
+             <number>0</number>
+            </property>
             <property name="text">
              <string>Enter current password</string>
             </property>
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QLineEdit" name="newPassword2"/>
+           <widget class="QLineEdit" name="newPassword2">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="autoFillBackground">
+             <bool>true</bool>
+            </property>
+           </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="currentPasswordEnter"/>
+           <widget class="QLineEdit" name="currentPasswordEnter">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="autoFillBackground">
+             <bool>true</bool>
+            </property>
+           </widget>
           </item>
           <item row="2" column="0">
            <widget class="QLabel" name="label_7">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="autoFillBackground">
+             <bool>true</bool>
+            </property>
+            <property name="lineWidth">
+             <number>0</number>
+            </property>
             <property name="text">
              <string>Repeat new password</string>
             </property>
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QLineEdit" name="newPassword"/>
+           <widget class="QLineEdit" name="newPassword">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="autoFillBackground">
+             <bool>true</bool>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
         <widget class="QPushButton" name="changePasswordButton">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="autoFillBackground">
+          <bool>true</bool>
+         </property>
          <property name="text">
           <string>Change Password</string>
          </property>
@@ -205,11 +426,20 @@
     </item>
     <item>
      <widget class="QLabel" name="label_10">
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
       <property name="styleSheet">
-       <string notr="true">#label_10
-{
-	background-color: rgb(239, 41, 41);
-}</string>
+       <string notr="true"/>
+      </property>
+      <property name="lineWidth">
+       <number>0</number>
       </property>
       <property name="text">
        <string/>

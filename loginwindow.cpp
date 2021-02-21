@@ -3,7 +3,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "user.h"
-#include "database.h"
 #include "registerwindow.h"
 #include <string>
 #include <QListWidget>
@@ -43,6 +42,10 @@ loginwindow::loginwindow(QWidget *parent) :
     this->setFixedSize(1280,720);
     ui->loginUsername->setPlaceholderText("Enter your username");
     ui->loginPassword->setPlaceholderText("Enter your password");
+    ui->loginPassword->setEchoMode(QLineEdit::Password);
+
+
+
 
 }
 

@@ -68,3 +68,53 @@ QString topic::getUsername2()
 {
     return this->username2;
 }
+
+QString & topic::getPastMessageHistoryAsString()
+{
+    return this->pastMessageHistoryAsString;
+}
+void topic::setPastMessageHistoryWithString(QString s)
+{
+    this->pastMessageHistoryAsString = s;
+}
+void topic::setPastMessageHistory(QStringList sl)
+{
+    this->pastMessageHistory = sl;
+}
+QStringList topic::getPastMessageHistory()
+{
+    return this->pastMessageHistory;
+}
+
+void topic::setMessageDatesHistoryAsString(QString s)
+{
+    this->messageDatesHistoryAsString = s;
+}
+void topic::setMessageDatesHistory(QStringList sl)
+{
+    this->messageDatesHistory = sl;
+}
+void topic::setPastMessageDatesHistoryAsString(QString s)
+{
+    this->pastMessageDatesHistoryAsString = s;
+}
+void topic::setPastMessageDateseHistory(QStringList sl)
+{
+    this->pastMessageDateseHistory = sl;
+}
+QStringList topic::getPastMessageDatesHistory()
+{
+    return this->pastMessageHistory;
+}
+QString & topic::getPastMessageDatesHistoryAsString()
+{
+    return this->pastMessageDatesHistoryAsString;
+}
+QStringList topic::getMessageDatesHistory()
+{
+    return this->messageDatesHistory;
+}
+QString & topic::getMessageDatesHistoryAsString()
+{
+    return this->messageDatesHistoryAsString;
+}
