@@ -189,6 +189,8 @@ void MainWindow::on_sendButton_clicked()
     if (m_client->publish(this->currenttopic->getTopicName(), ui->lineEditMessage->text().toUtf8()) == -1)
         QMessageBox::critical(this, QLatin1String("Error"), QLatin1String("Could not publish message"));
 
+    this->currenttopic->getMessageHistory().append(ui->lineEditMessage->text().toUtf8());
+
 }
 
 
@@ -581,8 +583,10 @@ void MainWindow::on_buttonConnect_clicked()
         if (m_client->state() == QMqttClient::Disconnected) {
 
             m_client->connectToHost();
+            QMessageBox::information(this, "Success", "Connected to host - now you are able to subscribe");
         } else {
             this->getUI()->buttonConnect->setText("Connect");
+            QMessageBox::information(this, "Success", "Disconnected from host - please connect to a new one ");
             m_client->disconnectFromHost();
         }
 
@@ -605,11 +609,39 @@ void MainWindow::on_buttonSubscribe_clicked()
         if (!subscription) {
             QMessageBox::critical(this, QLatin1String("Error"), QLatin1String("Could not subscribe. Is there a valid connection?"));
             return;
+        }else{
+            QMessageBox::information(this, "Success", "Subscribed to a valid connection - now you can send messages  ");
         }
 
 
     }else
     {
         QMessageBox::critical(this, QLatin1String("Error"), QLatin1String("Please select the user before trying to subscribe to the topic "));
+    }
+}
+
+void MainWindow::on_saveChatButton_clicked()
+{
+    if(!this->currenttopic->getTopicName().isEmpty())
+    {
+              QSqlQuery query(QSqlDatabase::database("QMYSQL"));
+
+              query.prepare("INSERT INTO topics (topicname, user1, user2, topicmessages)"
+                          "VALUES (:topicname, :user1, :user2, :topicmessages)");
+
+              query.bindValue(":topicname",this->currenttopic->getTopicName());
+              query.bindValue(":user1", this->currenttopic->getUsername1());
+              query.bindValue(":user2", this->currenttopic->getUsername2());
+              query.bindValue(":topicmessages","");
+
+
+            if(query.exec()){
+
+                 QMessageBox::information(this, "Saved", "New topic has been saved to the database!");
+             }else {
+                 QMessageBox::information(this, "Not saved Saved", "Error when writing the topic to the database");
+             }
+    }else{
+        QMessageBox::information(this, "Not saved Saved", "Nothing to save yet");
     }
 }
