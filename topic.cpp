@@ -17,7 +17,7 @@ void topic::setTopicName(QString s)
     this->topicname = s;
 }
 
-QString topic::getMessageHistoryAsString()
+QString& topic::getMessageHistoryAsString()
 {
     return this->messageHistoryAsString;
 }

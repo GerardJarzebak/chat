@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     this->setEmojiList();
     this->setFixedSize(1280,720);
+    this->currenttopic = nullptr;
 
     m_client = new QMqttClient(this);
 
@@ -190,6 +191,8 @@ void MainWindow::on_sendButton_clicked()
         QMessageBox::critical(this, QLatin1String("Error"), QLatin1String("Could not publish message"));
 
     this->currenttopic->getMessageHistory().append(ui->lineEditMessage->text().toUtf8());
+    this->currenttopic->getMessageHistoryAsString().append(ui->lineEditMessage->text().toUtf8());
+    this->currenttopic->getMessageHistoryAsString().append(",");
 
 }
 
@@ -425,6 +428,86 @@ void MainWindow::on_friendsList_itemDoubleClicked(QListWidgetItem *item)
 }
 
 
+
+void MainWindow::on_saveChatButton_clicked()
+{
+    if(!this->currenttopic->getTopicName().isEmpty())
+    {
+              QSqlQuery query(QSqlDatabase::database("QMYSQL"));
+
+              query.prepare("INSERT INTO topics (topicname,user1,user2,topicmessages)"
+                          "VALUES (:topicname,:user1,:user2,:topicmessages)");
+
+              //query.bindValue(":topicname",this->currenttopic->getTopicName());
+              //query.bindValue(":user1",this->currenttopic->getUsername1());
+              //query.bindValue(":user2",this->currenttopic->getUsername2());
+
+              QMessageBox::information(this, "topicname", this->currenttopic->getTopicName());
+              QMessageBox::information(this, "user1", this->currenttopic->getUsername1());
+              QMessageBox::information(this, "user2",this->currenttopic->getUsername2());
+              QMessageBox::information(this, "topicmessages", this->currenttopic->getMessageHistoryAsString());
+
+              query.bindValue(":topicname",this->currenttopic->getTopicName());
+              query.bindValue(":user1",this->currenttopic->getUsername1());
+              query.bindValue(":user2",this->currenttopic->getUsername2());
+              query.bindValue(":topicmessages",this->currenttopic->getMessageHistoryAsString());
+
+
+            if(query.exec()){
+
+                 QMessageBox::information(this, "Saved", "New topic has been saved to the database!");
+             }else {
+                 QMessageBox::information(this, "Not saved Saved", "Error when writing the topic to the database");
+             }
+    }else{
+        QMessageBox::information(this, "Not saved Saved", "Nothing to save yet");
+    }
+}
+
+
+
+void MainWindow::loadChatHistory(topic * t) {
+
+  QSqlQuery query(QSqlDatabase::database("QMYSQL"));
+  query.prepare("SELECT * from topics where topicname = :topicname");
+  query.bindValue(":topicname", t -> getTopicName());
+
+  if (query.exec()) {
+    while (query.next()) {
+
+      QString topicnameFromDB = query.value(1).toString();
+
+      if (t -> getTopicName() == topicnameFromDB) {
+
+        int idFromDB = query.value(0).toInt();
+        QString user1FromDb = query.value(2).toString();
+        QString user2FromDb = query.value(3).toString();
+        QString topicmessagesFromDB = query.value(4).toString();
+
+        t -> getMessageHistoryAsString().append(topicmessagesFromDB);
+
+        for (QString s: topicmessagesFromDB) {
+          t -> getMessageHistory().append(s);
+          ui -> editLog -> insertPlainText(s);
+
+        }
+
+      }
+
+    }
+
+  } else {
+
+    QMessageBox::information(this, "Failure", "The database query to load chat history didnt run properly");
+  }
+}
+
+
+
+
+
+
+
 void MainWindow::setTopic()
 {
 
@@ -440,7 +523,22 @@ void MainWindow::setTopic()
 
 
 
+
+     if(this->currenttopic != nullptr)
+    {
+        this->on_saveChatButton_clicked();
+    }
+
+
     this->currenttopic = new topic(t);
+    this->currenttopic->setUsername1(this->getUser()->getUsername());
+    this->currenttopic->setUsername2(this->getUser2()->getUsername());
+    this->currenttopic->setMessageHistoryWithString("");
+    ui->editLog->clear();
+    this->loadChatHistory(currenttopic);
+
+
+    //here load history of conversation
 
 
 
@@ -611,6 +709,19 @@ void MainWindow::on_buttonSubscribe_clicked()
             return;
         }else{
             QMessageBox::information(this, "Success", "Subscribed to a valid connection - now you can send messages  ");
+
+
+
+
+
+
+
+
+
+            /*for (QString s : this->currenttopic->getMessageHistory())
+            {
+                this->getUI()->editLog->ui->insertPlainText(s);
+            }*/
         }
 
 
@@ -620,28 +731,3 @@ void MainWindow::on_buttonSubscribe_clicked()
     }
 }
 
-void MainWindow::on_saveChatButton_clicked()
-{
-    if(!this->currenttopic->getTopicName().isEmpty())
-    {
-              QSqlQuery query(QSqlDatabase::database("QMYSQL"));
-
-              query.prepare("INSERT INTO topics (topicname, user1, user2, topicmessages)"
-                          "VALUES (:topicname, :user1, :user2, :topicmessages)");
-
-              query.bindValue(":topicname",this->currenttopic->getTopicName());
-              query.bindValue(":user1", this->currenttopic->getUsername1());
-              query.bindValue(":user2", this->currenttopic->getUsername2());
-              query.bindValue(":topicmessages","");
-
-
-            if(query.exec()){
-
-                 QMessageBox::information(this, "Saved", "New topic has been saved to the database!");
-             }else {
-                 QMessageBox::information(this, "Not saved Saved", "Error when writing the topic to the database");
-             }
-    }else{
-        QMessageBox::information(this, "Not saved Saved", "Nothing to save yet");
-    }
-}

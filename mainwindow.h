@@ -86,6 +86,7 @@ public slots:
     void setEmojiList();
     void setTopic();
     user* getUserFromDB(QString username);
+    void loadChatHistory(topic *t);
 
 private slots:
 

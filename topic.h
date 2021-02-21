@@ -9,7 +9,7 @@ public:
     topic(QString topicname);
     QString getTopicName();
     void setTopicName(QString s);
-    QString getMessageHistoryAsString();
+    QString &getMessageHistoryAsString();
     void setMessageHistoryWithString(QString s);
     void setMessageHistory(QStringList sl);
     QStringList getMessageHistory();
@@ -22,6 +22,7 @@ public:
 
     QString getUsername1();
     QString getUsername2();
+
 
 
 private:
