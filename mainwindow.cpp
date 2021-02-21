@@ -26,7 +26,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_client = new QMqttClient(this);
 
-
+    /*QDateTime::currentDateTime().toString()
+                        + QLatin1String(" Received Topic: ")
+                        + topic.name()*/
 
 
     m_client->setHostname("localhost");
@@ -36,10 +38,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_client, &QMqttClient::disconnected, this, &MainWindow::brokerDisconnected);
 
     connect(m_client, &QMqttClient::messageReceived, this, [this](const QByteArray &message, const QMqttTopicName &topic) {
-        const QString content = QDateTime::currentDateTime().toString()
-                    + QLatin1String(" Received Topic: ")
-                    + topic.name()
-                    + QLatin1String(" Message: ")
+        const QString content = this->getUser()->getUsername()
+                    + QLatin1String(": ")
                     + message
                     + QLatin1Char('\n');
         ui->editLog->insertPlainText(content);
@@ -187,12 +187,32 @@ void MainWindow::on_changeAvatarButton_clicked() {
 
 void MainWindow::on_sendButton_clicked()
 {
-    if (m_client->publish(this->currenttopic->getTopicName(), ui->lineEditMessage->text().toUtf8()) == -1)
-        QMessageBox::critical(this, QLatin1String("Error"), QLatin1String("Could not publish message"));
+    if(this->currenttopic != nullptr){
 
-    this->currenttopic->getMessageHistory().append(ui->lineEditMessage->text().toUtf8());
-    this->currenttopic->getMessageHistoryAsString().append(ui->lineEditMessage->text().toUtf8());
-    this->currenttopic->getMessageHistoryAsString().append(",");
+
+        if (m_client->publish(this->currenttopic->getTopicName(), ui->lineEditMessage->text().toUtf8()) == -1)
+        {
+            QMessageBox::critical(this, QLatin1String("Error"), QLatin1String("Could not publish message - please make sure to hit connect and subscribe first"));
+        }else{
+             QString message = ui->lineEditMessage->text();
+             this->currenttopic->getMessageHistory().append(this->getUser()->getUsername() + " : " + message);
+             this->currenttopic->getMessageHistoryAsString().append(this->getUser()->getUsername() + " : " + message +",");
+
+        }
+
+    } else{
+
+        QMessageBox::information(this, "Failure", "Please select the topic first");
+    }
+
+
+
+
+
+
+    //this->currenttopic->getMessageHistory().append(ui->lineEditMessage->text());
+    //this->currenttopic->getMessageHistoryAsString().append(ui->lineEditMessage->text().toUtf8());
+    //this->currenttopic->getMessageHistoryAsString().append(",");
 
 }
 
@@ -389,12 +409,10 @@ void MainWindow::on_attachFileButton_clicked()
 
 void MainWindow::on_accountDetailsButton_clicked()
 {
-    editaccountdetailswindow * adw = new editaccountdetailswindow(this,this->getUser());
+    //editaccountdetailswindow * adw = new editaccountdetailswindow(this,this->getUser());
 
-
-    this->setADW(adw);
-
-    adw->show();
+    this->adw = new editaccountdetailswindow(this,this->getUser());
+    this->adw->show();
 
 }
 
@@ -424,7 +442,7 @@ void MainWindow::on_friendsList_itemDoubleClicked(QListWidgetItem *item)
     this->setUser2(newSelectedUser);
     this->getUI()->selectedUser->setText(newSelectedUser->getUsername());
     this->setTopic();
-    this->getUI()->topicName->setText(this->currenttopic->getTopicName());
+    //this->getUI()->topicName->setText(this->currenttopic->getTopicName());
 }
 
 
@@ -437,15 +455,6 @@ void MainWindow::on_saveChatButton_clicked()
 
               query.prepare("INSERT INTO topics (topicname,user1,user2,topicmessages)"
                           "VALUES (:topicname,:user1,:user2,:topicmessages)");
-
-              //query.bindValue(":topicname",this->currenttopic->getTopicName());
-              //query.bindValue(":user1",this->currenttopic->getUsername1());
-              //query.bindValue(":user2",this->currenttopic->getUsername2());
-
-              QMessageBox::information(this, "topicname", this->currenttopic->getTopicName());
-              QMessageBox::information(this, "user1", this->currenttopic->getUsername1());
-              QMessageBox::information(this, "user2",this->currenttopic->getUsername2());
-              QMessageBox::information(this, "topicmessages", this->currenttopic->getMessageHistoryAsString());
 
               query.bindValue(":topicname",this->currenttopic->getTopicName());
               query.bindValue(":user1",this->currenttopic->getUsername1());
@@ -468,8 +477,9 @@ void MainWindow::on_saveChatButton_clicked()
 
 void MainWindow::loadChatHistory(topic * t) {
 
+  this->getUI()->editLog->clear();
   QSqlQuery query(QSqlDatabase::database("QMYSQL"));
-  query.prepare("SELECT * from topics where topicname = :topicname");
+  query.prepare("SELECT * from topics where topicname = :topicname ORDER BY id  ASC");
   query.bindValue(":topicname", t -> getTopicName());
 
   if (query.exec()) {
@@ -484,11 +494,51 @@ void MainWindow::loadChatHistory(topic * t) {
         QString user2FromDb = query.value(3).toString();
         QString topicmessagesFromDB = query.value(4).toString();
 
-        t -> getMessageHistoryAsString().append(topicmessagesFromDB);
+        //t -> getMessageHistoryAsString().append(topicmessagesFromDB);
 
-        for (QString s: topicmessagesFromDB) {
-          t -> getMessageHistory().append(s);
+        for (QString s: topicmessagesFromDB.split(",")) {
+          //t -> getMessageHistory().append(s);
           ui -> editLog -> insertPlainText(s);
+          ui -> editLog -> insertPlainText("\n");
+
+        }
+
+      }
+
+    }
+
+  } else {
+
+    QMessageBox::information(this, "Failure", "The database query to load chat history didnt run properly");
+  }
+}
+
+
+void MainWindow::loadChatHistoryDesc(topic * t) {
+
+  this->getUI()->editLog->clear();
+  QSqlQuery query(QSqlDatabase::database("QMYSQL"));
+  query.prepare("SELECT * from topics where topicname = :topicname ORDER BY id  DESC");
+  query.bindValue(":topicname", t -> getTopicName());
+
+  if (query.exec()) {
+    while (query.next()) {
+
+      QString topicnameFromDB = query.value(1).toString();
+
+      if (t -> getTopicName() == topicnameFromDB) {
+
+        int idFromDB = query.value(0).toInt();
+        QString user1FromDb = query.value(2).toString();
+        QString user2FromDb = query.value(3).toString();
+        QString topicmessagesFromDB = query.value(4).toString();
+
+        //t -> getMessageHistoryAsString().append(topicmessagesFromDB);
+
+        for (QString s: topicmessagesFromDB.split(",")) {
+          //t -> getMessageHistory().append(s);
+          ui -> editLog -> insertPlainText(s);
+          ui -> editLog -> insertPlainText("\n");
 
         }
 
@@ -522,19 +572,23 @@ void MainWindow::setTopic()
      }
 
 
+     if (this -> currenttopic != nullptr && !this -> currenttopic -> getTopicName().isEmpty()) {
+       this -> on_buttonConnect_clicked();
+       this -> on_buttonSubscribe_clicked();
+     }
 
-
-     if(this->currenttopic != nullptr)
-    {
-        this->on_saveChatButton_clicked();
-    }
-
+     if (this -> currenttopic != nullptr && !this -> currenttopic -> getMessageHistoryAsString().isEmpty()) {
+       this -> on_saveChatButton_clicked();
+     }
 
     this->currenttopic = new topic(t);
     this->currenttopic->setUsername1(this->getUser()->getUsername());
     this->currenttopic->setUsername2(this->getUser2()->getUsername());
     this->currenttopic->setMessageHistoryWithString("");
     ui->editLog->clear();
+    this->getUI()->topicName->setText(this->currenttopic->getTopicName());
+    this->on_buttonConnect_clicked();
+    this->on_buttonSubscribe_clicked();
     this->loadChatHistory(currenttopic);
 
 
@@ -652,7 +706,7 @@ void MainWindow::on_searchButton_clicked()
       this->setUser2(searcheduser);
       this->setTopic();
       this->getUI()->selectedUser->setText(searcheduser->getUsername());
-      this->getUI()->topicName->setText(this->currenttopic->getTopicName());
+      //this->getUI()->topicName->setText(this->currenttopic->getTopicName());
 
 
     } else{
@@ -731,3 +785,24 @@ void MainWindow::on_buttonSubscribe_clicked()
     }
 }
 
+
+void MainWindow::on_ascSortButton_clicked()
+{
+    if(this->currenttopic != nullptr)
+    {
+         this->loadChatHistory(this->currenttopic);
+    }else{
+        QMessageBox::information(this, "Wait a minute", "Please select the chat to sort first :)");
+    }
+
+}
+
+void MainWindow::on_descSortButton_clicked()
+{
+    if(this->currenttopic != nullptr)
+    {
+         this->loadChatHistoryDesc(this->currenttopic);
+    }else{
+        QMessageBox::information(this, "Wait a minute", "Please select the chat to sort first :)");
+    }
+}

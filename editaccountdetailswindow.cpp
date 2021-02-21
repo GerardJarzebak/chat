@@ -18,13 +18,6 @@ editaccountdetailswindow::~editaccountdetailswindow()
     delete ui;
 }
 
-void editaccountdetailswindow::on_pushButton_2_clicked()
-{
-
-
-    this->close();
-
-}
 
 Ui::editaccountdetailswindow * editaccountdetailswindow::getUI()
 {

@@ -20,7 +20,8 @@
    <string notr="true">#editaccountdetailswindow
 {
  
-	background-image: url(:/images/images/bluebg.png);
+	
+	background-color: rgb(239, 41, 41);
 }</string>
   </property>
   <widget class="QPushButton" name="backButton">
@@ -39,10 +40,10 @@
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>290</x>
-     <y>120</y>
-     <width>655</width>
-     <height>311</height>
+     <x>490</x>
+     <y>150</y>
+     <width>731</width>
+     <height>361</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -52,6 +53,12 @@
        <font>
         <pointsize>20</pointsize>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#label
+{
+	background-color: rgb(239, 41, 41);
+}</string>
       </property>
       <property name="text">
        <string>CHANGE YOUR DETAILS </string>
@@ -69,10 +76,10 @@
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
            <layout class="QGridLayout" name="gridLayout">
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_3">
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_9">
               <property name="text">
-               <string>Current email :</string>
+               <string>Enter new email :         </string>
               </property>
              </widget>
             </item>
@@ -86,15 +93,15 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_9">
-              <property name="text">
-               <string>Enter new email :         </string>
-              </property>
-             </widget>
-            </item>
             <item row="1" column="1">
              <widget class="QLineEdit" name="newEmailEnter"/>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>Current email :</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -198,6 +205,12 @@
     </item>
     <item>
      <widget class="QLabel" name="label_10">
+      <property name="styleSheet">
+       <string notr="true">#label_10
+{
+	background-color: rgb(239, 41, 41);
+}</string>
+      </property>
       <property name="text">
        <string/>
       </property>

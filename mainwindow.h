@@ -87,6 +87,7 @@ public slots:
     void setTopic();
     user* getUserFromDB(QString username);
     void loadChatHistory(topic *t);
+    void loadChatHistoryDesc(topic * t);
 
 private slots:
 
@@ -113,6 +114,8 @@ private slots:
 
 
 
+
+
     void subcribe();
 
     void connectToTopic();
@@ -126,6 +129,10 @@ private slots:
     void on_buttonSubscribe_clicked();
 
     void on_saveChatButton_clicked();
+
+    void on_ascSortButton_clicked();
+
+    void on_descSortButton_clicked();
 
 private:
     Ui::MainWindow *ui;
