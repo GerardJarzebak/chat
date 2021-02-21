@@ -123,7 +123,7 @@ void MainWindow::connectToTopic()
 
 void MainWindow::subcribe()
 {
-    auto subscription = m_client->subscribe(this->getTopic());
+    auto subscription = m_client->subscribe(this->currenttopic->getTopicName());
     if (!subscription) {
         QMessageBox::critical(this, QLatin1String("Error"), QLatin1String("Could not subscribe. Is there a valid connection?"));
         return;
@@ -186,7 +186,7 @@ void MainWindow::on_changeAvatarButton_clicked() {
 
 void MainWindow::on_sendButton_clicked()
 {
-    if (m_client->publish(this->getTopic(), ui->lineEditMessage->text().toUtf8()) == -1)
+    if (m_client->publish(this->currenttopic->getTopicName(), ui->lineEditMessage->text().toUtf8()) == -1)
         QMessageBox::critical(this, QLatin1String("Error"), QLatin1String("Could not publish message"));
 
 }
@@ -419,34 +419,33 @@ void MainWindow::on_friendsList_itemDoubleClicked(QListWidgetItem *item)
     this->setUser2(newSelectedUser);
     this->getUI()->selectedUser->setText(newSelectedUser->getUsername());
     this->setTopic();
-    this->getUI()->topicName->setText(this->getTopic());
+    this->getUI()->topicName->setText(this->currenttopic->getTopicName());
 }
 
 
 void MainWindow::setTopic()
 {
 
-    QString topic;
+    QString t;
 
      if (this->getUser()->getUserID() > this->getUser2()->getUserID()){
 
-         topic = this->getUser()->getUsername() + "TO" + this->getUser2()->getUsername() ;
+         t = this->getUser()->getUsername() + "TO" + this->getUser2()->getUsername() ;
      }else {
 
-        topic = this->getUser2()->getUsername() + "TO" + this->getUser()->getUsername() ;
+        t = this->getUser2()->getUsername() + "TO" + this->getUser()->getUsername() ;
      }
 
-    this->topic = topic;
+
+
+    this->currenttopic = new topic(t);
 
 
 
 
 }
 
-QString MainWindow::getTopic()
-{
-return this->topic;
-}
+
 
 
 
@@ -553,7 +552,7 @@ void MainWindow::on_searchButton_clicked()
       this->setUser2(searcheduser);
       this->setTopic();
       this->getUI()->selectedUser->setText(searcheduser->getUsername());
-      this->getUI()->topicName->setText(this->getTopic());
+      this->getUI()->topicName->setText(this->currenttopic->getTopicName());
 
 
     } else{
@@ -602,7 +601,7 @@ void MainWindow::on_buttonSubscribe_clicked()
 
 
 
-        auto subscription = m_client->subscribe(this->getTopic());
+        auto subscription = m_client->subscribe(this->currenttopic->getTopicName());
         if (!subscription) {
             QMessageBox::critical(this, QLatin1String("Error"), QLatin1String("Could not subscribe. Is there a valid connection?"));
             return;

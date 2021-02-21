@@ -55,6 +55,7 @@
 #include <QMainWindow>
 #include <QMqttClient>
 #include "QtSql"
+#include <topic.h>
 #include <user.h>
 #include <editaccountdetailswindow.h>
 #include "QListWidgetItem"
@@ -83,7 +84,6 @@ public slots:
     void setADW( editaccountdetailswindow * adw);
     editaccountdetailswindow * getADW();
     void setEmojiList();
-    QString getTopic();
     void setTopic();
     user* getUserFromDB(QString username);
 
@@ -130,7 +130,7 @@ private:
     user *u;
     user *u2;
     editaccountdetailswindow * adw;
-    QString topic;
+    topic *currenttopic;
 
 };
 
