@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "topic.h"
 #include "QMessageBox"
+#include <QListWidget>
 
 
 namespace Ui {
@@ -27,6 +28,14 @@ public:
 
 private slots:
     void on_backToMainWindow_clicked();
+
+    void on_listOfSearchedMessages_itemDoubleClicked(QListWidgetItem *item);
+
+    void on_viewMessageButton_clicked();
+
+    void on_editMessageButton_clicked();
+
+    void on_deleteMessageButton_clicked();
 
 private:
     Ui::searchresultswindow *ui;

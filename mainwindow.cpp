@@ -42,9 +42,10 @@ MainWindow::MainWindow(QWidget *parent) :
         const QString content = this->getUser()->getUsername()
                     + QLatin1String(": ")
                     + message
-                    + " | Sent on : "
-                    + QDateTime::currentDateTime().toString()
                     + QLatin1Char('\n');
+                    //+ " | Sent on : "
+                    //+ QDateTime::currentDateTime().toString()
+
         ui->editLog->insertPlainText(content);
     });
 
