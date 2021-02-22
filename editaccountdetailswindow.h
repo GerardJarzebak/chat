@@ -10,7 +10,7 @@ class editaccountdetailswindow ;
 
 
 
-class editaccountdetailswindow : public QWidget
+class editaccountdetailswindow : public QDialog
 {
     Q_OBJECT
 

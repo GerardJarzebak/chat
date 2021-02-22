@@ -2,7 +2,7 @@
 #include "ui_editaccountdetailswindow.h"
 #include <user.h>
 editaccountdetailswindow::editaccountdetailswindow(QWidget *parent,user * u) :
-    QWidget(parent),
+    QDialog(parent),
     ui(new Ui::editaccountdetailswindow)
 {
     ui->setupUi(this);

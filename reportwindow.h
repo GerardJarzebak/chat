@@ -9,7 +9,7 @@ namespace Ui {
 class reportwindow;
 }
 
-class reportwindow : public QWidget
+class reportwindow : public QDialog
 {
     Q_OBJECT
 

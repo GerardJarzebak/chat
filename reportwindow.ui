@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>reportwindow</class>
- <widget class="QWidget" name="reportwindow">
+ <widget class="QDialog" name="reportwindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -35,14 +35,14 @@
     </font>
    </property>
    <property name="autoFillBackground">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="title">
     <string/>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="2" column="0">
-     <widget class="QLabel" name="numberOfMessagesTitleLabel">
+    <item row="0" column="0">
+     <widget class="QLabel" name="numberOfFriendsTitleLabel">
       <property name="font">
        <font>
         <pointsize>13</pointsize>
@@ -51,30 +51,10 @@
        </font>
       </property>
       <property name="autoFillBackground">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="text">
-       <string>Total number of messages sent in this chat  :  </string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="0">
-     <widget class="QLabel" name="firstMessageTitleLabel">
-      <property name="font">
-       <font>
-        <pointsize>13</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="autoFillBackground">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string>You've sent your first message in this chat on : </string>
+       <string>Number of friends you've added : </string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -91,7 +71,7 @@
        </font>
       </property>
       <property name="autoFillBackground">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="text">
        <string>TextLabel</string>
@@ -111,67 +91,7 @@
        </font>
       </property>
       <property name="autoFillBackground">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="0">
-     <widget class="QLabel" name="numberOfFriendsTitleLabel">
-      <property name="font">
-       <font>
-        <pointsize>13</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="autoFillBackground">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string>Number of friends you've added : </string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLabel" name="numberOfAppUsersLabel">
-      <property name="font">
-       <font>
-        <pointsize>13</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="autoFillBackground">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QLabel" name="numberOfFilesSharedLabel">
-      <property name="font">
-       <font>
-        <pointsize>13</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="autoFillBackground">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="text">
        <string>TextLabel</string>
@@ -191,7 +111,7 @@
        </font>
       </property>
       <property name="autoFillBackground">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="text">
        <string>Total number of files shared in this chat :</string>
@@ -201,8 +121,28 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="1">
-     <widget class="QLabel" name="firstMessageSentOnLabel">
+    <item row="2" column="0">
+     <widget class="QLabel" name="numberOfMessagesTitleLabel">
+      <property name="font">
+       <font>
+        <pointsize>13</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string>Total number of messages sent in this chat  :  </string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLabel" name="numberOfFilesSharedLabel">
       <property name="font">
        <font>
         <pointsize>13</pointsize>
@@ -211,7 +151,7 @@
        </font>
       </property>
       <property name="autoFillBackground">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="text">
        <string>TextLabel</string>
@@ -231,10 +171,30 @@
        </font>
       </property>
       <property name="autoFillBackground">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="text">
        <string>Number of registered application users :  </string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLabel" name="numberOfAppUsersLabel">
+      <property name="font">
+       <font>
+        <pointsize>13</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -258,7 +218,7 @@
     </font>
    </property>
    <property name="autoFillBackground">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>CHAT APP STATISTICAL REPORT </string>
@@ -273,7 +233,7 @@
      <x>0</x>
      <y>0</y>
      <width>151</width>
-     <height>71</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
@@ -295,7 +255,7 @@
     </font>
    </property>
    <property name="autoFillBackground">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>TextLabel</string>
@@ -321,7 +281,7 @@
     </font>
    </property>
    <property name="autoFillBackground">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>Username :</string>

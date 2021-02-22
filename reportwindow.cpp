@@ -4,7 +4,7 @@
 #include <QStringList>
 
 reportwindow::reportwindow(QWidget *parent,user * u,topic * t) :
-    QWidget(parent),
+    QDialog(parent),
     ui(new Ui::reportwindow)
 {
     ui->setupUi(this);
@@ -71,23 +71,6 @@ reportwindow::reportwindow(QWidget *parent,user * u,topic * t) :
 
     ui->numberOfFilesSharedLabel->setText("Temporarly not available");
 
-    QString firstDate;
-    query.prepare("SELECT messagedates from topics where topicname = :topicname order by id asc");
-    query.bindValue(":topicname",t->getTopicName());
-
-    if (query.exec()) {
-        while (query.next()) {
-        firstDate = query.value(5).toString();
-        break;
-        }
-
-    }else{
-        QMessageBox::information(this, "Query didnt execute", "Couldnt get information about first message");
-        ui->firstMessageSentOnLabel->setText("Not available");
-    }
-    QStringList firstDates = firstDate.split(",");
-
-    ui->firstMessageSentOnLabel->setText(firstDates.at(0));
 
 
 

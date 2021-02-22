@@ -21,6 +21,7 @@ public:
     topic * getTopic();
     QString getSearchedMessage();
     Ui::searchresultswindow * getUI();
+    void saveEditsToDB();
 
 
     void setTopic(topic * t);

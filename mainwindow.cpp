@@ -50,10 +50,10 @@ MainWindow::MainWindow(QWidget *parent) :
     });
 
     connect(m_client, &QMqttClient::pingResponseReceived, this, [this]() {
-        const QString content = QDateTime::currentDateTime().toString()
+        /*const QString content = QDateTime::currentDateTime().toString()
                     + QLatin1String(" PingResponse")
                     + QLatin1Char('\n');
-        ui->editLog->insertPlainText(content);
+        ui->editLog->insertPlainText(content);*/
     });
 
     //connect(ui->lineEditHost, &QLineEdit::textChanged, m_client, &QMqttClient::setHostname);
