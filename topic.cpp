@@ -5,6 +5,8 @@ topic::topic(QString topicname)
     this->topicname =topicname;
     this->messageHistory = QStringList();
     this->messageHistoryAsString = "";
+    this->messageDatesHistory = QStringList();
+    this->messageDatesHistoryAsString = "";
 }
 
 QString topic::getTopicName()

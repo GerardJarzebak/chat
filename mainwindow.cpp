@@ -42,7 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
         const QString content = this->getUser()->getUsername()
                     + QLatin1String(": ")
                     + message
-                    + "| Sent on : "
+                    + " | Sent on : "
                     + QDateTime::currentDateTime().toString()
                     + QLatin1Char('\n');
         ui->editLog->insertPlainText(content);
@@ -200,6 +200,9 @@ void MainWindow::on_sendButton_clicked()
              QString message = ui->lineEditMessage->text();
              this->currenttopic->getMessageHistory().append(this->getUser()->getUsername() + " : " + message);
              this->currenttopic->getMessageHistoryAsString().append(this->getUser()->getUsername() + " : " + message +",");
+             this->currenttopic->getMessageDatesHistoryAsString().append(QDateTime::currentDateTime().toString() + ",");
+             this->currenttopic->getMessageDatesHistory().append(QDateTime::currentDateTime().toString() + ",");
+
              ui->lineEditMessage->clear();
 
         }
@@ -460,13 +463,14 @@ void MainWindow::on_saveChatButton_clicked()
     {
               QSqlQuery query(QSqlDatabase::database("QMYSQL"));
 
-              query.prepare("INSERT INTO topics (topicname,user1,user2,topicmessages)"
-                          "VALUES (:topicname,:user1,:user2,:topicmessages)");
+              query.prepare("INSERT INTO topics (topicname,user1,user2,topicmessages,messagedates)"
+                          "VALUES (:topicname,:user1,:user2,:topicmessages,:messagedates)");
 
               query.bindValue(":topicname",this->currenttopic->getTopicName());
               query.bindValue(":user1",this->currenttopic->getUsername1());
               query.bindValue(":user2",this->currenttopic->getUsername2());
               query.bindValue(":topicmessages",this->currenttopic->getMessageHistoryAsString());
+              query.bindValue(":messagedates",this->currenttopic->getMessageDatesHistoryAsString());
 
 
             if(query.exec()){
@@ -500,13 +504,20 @@ void MainWindow::loadChatHistory(topic * t) {
         QString user1FromDb = query.value(2).toString();
         QString user2FromDb = query.value(3).toString();
         QString topicmessagesFromDB = query.value(4).toString();
+        QString messageDatesFromDB = query.value(5).toString();
 
         t -> getPastMessageHistoryAsString().append(topicmessagesFromDB);
+        t->getMessageDatesHistoryAsString().append(messageDatesFromDB);
 
         for (QString s: topicmessagesFromDB.split(",")) {
           t -> getPastMessageHistory().append(s);
           ui -> editLog -> insertPlainText(s);
           ui -> editLog -> insertPlainText("\n");
+
+        }
+
+        for (QString s: messageDatesFromDB.split(",")) {
+          t -> getMessageDatesHistory().append(s);
 
         }
 
@@ -539,15 +550,24 @@ void MainWindow::loadChatHistoryDesc(topic * t) {
         QString user1FromDb = query.value(2).toString();
         QString user2FromDb = query.value(3).toString();
         QString topicmessagesFromDB = query.value(4).toString();
+        QString messageDatesFromDB = query.value(5).toString();
 
-        //t -> getMessageHistoryAsString().append(topicmessagesFromDB);
+        //t -> getPastMessageHistoryAsString().append(topicmessagesFromDB);
+        //t->getMessageDatesHistoryAsString().append(messageDatesFromDB);
 
         for (QString s: topicmessagesFromDB.split(",")) {
-          //t -> getMessageHistory().append(s);
+          t -> getPastMessageHistory().append(s);
           ui -> editLog -> insertPlainText(s);
           ui -> editLog -> insertPlainText("\n");
 
         }
+
+        for (QString s: messageDatesFromDB.split(",")) {
+          t -> getMessageDatesHistory().append(s);
+
+        }
+
+
 
       }
 
@@ -592,6 +612,7 @@ void MainWindow::setTopic()
     this->currenttopic->setUsername1(this->getUser()->getUsername());
     this->currenttopic->setUsername2(this->getUser2()->getUsername());
     this->currenttopic->setMessageHistoryWithString("");
+    this->currenttopic->setMessageDatesHistoryAsString("");
     ui->editLog->clear();
     this->getUI()->topicName->setText(this->currenttopic->getTopicName());
     this->on_buttonConnect_clicked();
