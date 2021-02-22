@@ -134,7 +134,10 @@ void MainWindow::subcribe()
     }
 }
 
-
+topic* MainWindow::getCurrentTopic()
+{
+    return this->currenttopic;
+}
 
 
 void MainWindow::on_changeAvatarButton_clicked() {
@@ -517,7 +520,7 @@ void MainWindow::loadChatHistory(topic * t) {
         }
 
         for (QString s: messageDatesFromDB.split(",")) {
-          t -> getMessageDatesHistory().append(s);
+          t -> getPastMessageDatesHistory().append(s);
 
         }
 
@@ -852,4 +855,17 @@ void MainWindow::on_searchButton_2_clicked()
 
 
 
+}
+
+void MainWindow::on_reportButton_clicked()
+{
+    if(this->getUser() != nullptr && this->currenttopic != nullptr )
+    {
+        rw = new reportwindow(this,this->getUser(),this->getCurrentTopic());
+        rw->show();
+
+    }else
+    {
+              QMessageBox::information(this, "Wait a minute", "Please select the chat first :)");
+    }
 }

@@ -9,6 +9,7 @@ HEADERS = \
    $$PWD/loginwindow.h \
    editaccountdetailswindow.h \
    registerwindow.h \
+   reportwindow.h \
    searchresultswindow.h \
    topic.h \
    user.h
@@ -19,6 +20,7 @@ SOURCES = \
    $$PWD/loginwindow.cpp \
    editaccountdetailswindow.cpp \
    registerwindow.cpp \
+   reportwindow.cpp \
    searchresultswindow.cpp \
    topic.cpp \
    user.cpp
@@ -28,6 +30,7 @@ FORMS = \
    $$PWD/loginwindow.ui \
    editaccountdetailswindow.ui \
    registerwindow.ui \
+   reportwindow.ui \
    searchresultswindow.ui
 
 

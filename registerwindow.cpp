@@ -55,7 +55,7 @@ void registerwindow::on_registerButton_clicked() {
       QMessageBox::information(this, "Inserted", "Data Inserted Successfully");
     } else {
 
-      QMessageBox::information(this, "Not inserted", "Data is not inserted");
+        QMessageBox::information(this, "Not inserted", "Data is not inserted");
     }
 
   } else {

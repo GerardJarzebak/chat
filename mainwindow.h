@@ -59,6 +59,7 @@
 #include "searchresultswindow.h"
 #include <user.h>
 #include <editaccountdetailswindow.h>
+#include <reportwindow.h>
 #include "QListWidgetItem"
 #include "QBuffer"
 
@@ -90,6 +91,7 @@ public slots:
     user* getUserFromDB(QString username);
     void loadChatHistory(topic *t);
     void loadChatHistoryDesc(topic * t);
+    topic* getCurrentTopic();
 
 private slots:
 
@@ -138,6 +140,8 @@ private slots:
 
     void on_searchButton_2_clicked();
 
+    void on_reportButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QMqttClient *m_client;
@@ -146,6 +150,7 @@ private:
     editaccountdetailswindow * adw;
     topic *currenttopic;
     searchresultswindow * srw;
+    reportwindow * rw;
 
 };
 
