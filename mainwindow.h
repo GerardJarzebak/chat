@@ -62,6 +62,7 @@
 #include <reportwindow.h>
 #include "QListWidgetItem"
 #include "QBuffer"
+#include <QtAlgorithms>
 
 
 

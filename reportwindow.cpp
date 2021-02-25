@@ -37,7 +37,7 @@ reportwindow::reportwindow(QWidget *parent,user * u,topic * t) :
         while (query.next()) {
              allMessages.append(query.value(4).toString());
 
-        }
+        }allMessages.chop(1);
         for(QString s : allMessages.split(","))
         {
             messageCounter++;
@@ -71,7 +71,35 @@ reportwindow::reportwindow(QWidget *parent,user * u,topic * t) :
 
     ui->numberOfFilesSharedLabel->setText("Temporarly not available");
 
+    query.prepare("SELECT * from topics where user1 = :user1 order by id asc");
+            query.bindValue(":user1",t->getUsername1());
 
+
+            if (query.exec()) {
+
+
+
+
+
+                QString allMessages = "";
+                int messageCounter = 0;
+                while (query.next()) {
+                     allMessages.append(query.value(4).toString());
+
+
+                for(QString s : allMessages.split(","))
+                {
+                    if(s.contains(t->getUsername1()))
+                    {
+                        messageCounter++;
+                    }
+
+                }  } ui->numberOfMessagesSentTotalValue->setNum(messageCounter);
+
+            }else{
+                QMessageBox::information(this, "Query didnt execute", "Couldnt get information about amount of users");
+                ui->numberOfAppUsersLabel->setText("Not available");
+            }
 
 
 

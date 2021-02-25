@@ -9,7 +9,7 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QFileDialog>
-
+#include <QKeyEvent>
 
 
 
@@ -27,11 +27,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_client = new QMqttClient(this);
 
-    /*QDateTime::currentDateTime().toString()
-                        + QLatin1String(" Received Topic: ")
-                        + topic.name()*/
-
-
     m_client->setHostname("localhost");
     m_client->setPort(1883);
 
@@ -42,22 +37,16 @@ MainWindow::MainWindow(QWidget *parent) :
         const QString content = this->getUser()->getUsername()
                     + QLatin1String(": ")
                     + message
+                    + QLatin1String(" - ")
+                    + QDateTime::currentDateTime().toString()
                     + QLatin1Char('\n');
-                    //+ " | Sent on : "
-                    //+ QDateTime::currentDateTime().toString()
 
         ui->editLog->insertPlainText(content);
     });
 
     connect(m_client, &QMqttClient::pingResponseReceived, this, [this]() {
-        /*const QString content = QDateTime::currentDateTime().toString()
-                    + QLatin1String(" PingResponse")
-                    + QLatin1Char('\n');
-        ui->editLog->insertPlainText(content);*/
-    });
 
-    //connect(ui->lineEditHost, &QLineEdit::textChanged, m_client, &QMqttClient::setHostname);
-    //connect(ui->spinBoxPort, QOverload<int>::of(&QSpinBox::valueChanged), this, &MainWindow::setClientPort);
+    });
 
 
     updateLogStateChange();
@@ -68,8 +57,6 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
-
 
 void MainWindow::setUser(user * user)
 {
@@ -103,14 +90,8 @@ void MainWindow::setClientPort(int p)
 
 void MainWindow::brokerDisconnected()
 {
-  //  ui->lineEditHost->setEnabled(true);
-  //  ui->spinBoxPort->setEnabled(true);
-    //ui->buttonConnect->setText(tr("Connect"));
+
 }
-
-
-
-
 
 
 
@@ -142,11 +123,6 @@ topic* MainWindow::getCurrentTopic()
 
 
 void MainWindow::on_changeAvatarButton_clicked() {
-  //allow to attach the new avatar file + Ok/Cancel buttons
-
-  //QSqlQuery query(QSqlDatabase::database("My Connect"));
-
-  //query.prepare(QString("SELECT * FROM users WHERE username = :username AND password = :password"));
 
   QString filename = QFileDialog::getOpenFileName(this, "Please select your new avatar", "path/home/", "Image Files (*.jpg *.jpeg *.png");
 
@@ -183,15 +159,6 @@ void MainWindow::on_changeAvatarButton_clicked() {
 
 
 
-
-
-
-
-
-
-
-
-
 void MainWindow::on_sendButton_clicked()
 {
     if(this->currenttopic != nullptr){
@@ -201,7 +168,7 @@ void MainWindow::on_sendButton_clicked()
         {
             QMessageBox::critical(this, QLatin1String("Error"), QLatin1String("Could not publish message - please make sure to hit connect and subscribe first"));
         }else{
-             QString message = ui->lineEditMessage->text();
+             QString message = ui->lineEditMessage->text() + " " + QDateTime::currentDateTime().toString();
              this->currenttopic->getMessageHistory().append(this->getUser()->getUsername() + " : " + message);
              this->currenttopic->getMessageHistoryAsString().append(this->getUser()->getUsername() + " : " + message +",");
              this->currenttopic->getMessageDatesHistoryAsString().append(QDateTime::currentDateTime().toString() + ",");
@@ -217,14 +184,6 @@ void MainWindow::on_sendButton_clicked()
     }
 
 
-
-
-
-
-    //this->currenttopic->getMessageHistory().append(ui->lineEditMessage->text());
-    //this->currenttopic->getMessageHistoryAsString().append(ui->lineEditMessage->text().toUtf8());
-    //this->currenttopic->getMessageHistoryAsString().append(",");
-
 }
 
 
@@ -239,66 +198,31 @@ void MainWindow::setEmojiList()
     this->getUI()->emojiList->setFlow(QListView::LeftToRight);
 
 
-    QStringList *qsl = new QStringList;
+    QSqlQuery query(QSqlDatabase::database("QMYSQL"));
+    query.prepare("SELECT * from emojis where id = :id");
+    query.bindValue(":id",1);
 
-    qsl->append("👍");
-    qsl->append("👍");
-    qsl->append("👎");
-    qsl->append("💪");
-    qsl->append("😂");
-    qsl->append("🙂");
-    qsl->append("😞");
-    qsl->append("🥳");
-    qsl->append("😂");
-    qsl->append("🙏");
-    qsl->append("😎");
-    qsl->append("😴");
-    qsl->append("😡");
-    qsl->append("😭");
-    qsl->append("🧐");
-    qsl->append("😎");
-    qsl->append("😞");
-    qsl->append("😖");
-    qsl->append("😤");
-    qsl->append("🤕");
-    qsl->append("😲");
-    qsl->append("🤫");
-    qsl->append("🥺");
-    qsl->append("😍");
-    qsl->append("😁"); 
-    qsl->append("🥊");
-    qsl->append("🏆");
-    qsl->append("🎮");
-    qsl->append("🍷");
-    qsl->append("🍽");
-    qsl->append("🍻");
-    qsl->append("👑");
+      if (query.exec()) {
+           while (query.next()) {
+               QString emojis = query.value(1).toString();
 
+               for (QString s : emojis.split(","))
+                  {
+                   this->getUI()->emojiList->addItem(s);
+                  }
+           }
 
-
-
-    for (int i=0; i<qsl->length(); i++)
-       {
-        //QListWidgetItem *qlwi = new QListWidgetItem;
-        //qlwi->setText(qsl->at(i));
-        this->getUI()->emojiList->addItem(qsl->at(i));
-       }
-
-
-
-
-
+      }else
+      {
+          QMessageBox::information(this, "ERROR", "COULD NOT LOAD EMOJIS FROM THE DATABASE");
+      }
 }
+
+
 
 
 void MainWindow::on_RemoveFriendButton_clicked()
 {
-    //Removes friend from the list and also removes him from the database too
-    //mw->getUI()->friendsList->addItem(friendusername);}
-
-    //What needs to be done is remove selected element from that list + remove him from the list of logged user's usernames + do an sql query and edit the string
-
-    //this->getUI()->friendsList->removeItemWidget();
     QInputDialog * id = new QInputDialog();
     QString userInput = id->getText(this,"Remove your friend","Please enter the name of the friend you want to remove");
 
@@ -316,16 +240,12 @@ void MainWindow::on_RemoveFriendButton_clicked()
                        int idFromDB = query.value(0).toInt();
                        QString usernameFromDB = query.value(1).toString();
 
-//where the 0 comes from
-                       //why no change
-
                      if (usernameFromDB == userInput) {
 
                          this->getUser()->getFriendsIdList().removeOne(idFromDB);
                          this->getUser()->getFriendsList().removeOne(usernameFromDB);
 
                          QString newFriendsListForDB = this->getUser()->getFriendsListAsString();
-
 
                          query.prepare("UPDATE users SET friendsList = :friendsList WHERE id = :userid");
                          query.bindValue(":userid",this->getUser()->getUserID());
@@ -351,8 +271,6 @@ void MainWindow::on_RemoveFriendButton_clicked()
 
                      }
 
-
-
                  } else {
 
                    QMessageBox::information(this, "FAILURE", "QUERY NOT EXECUTED PROPERLY");
@@ -363,25 +281,7 @@ void MainWindow::on_RemoveFriendButton_clicked()
         QMessageBox::information(this, "Success", "This user was on your friends list!");
     }
 
-
-
-
-
-    //this->getUI()->friendsList->findItems(userInput,)
-
-
-   // qDeleteAll(this->getUI()->friendsList->findItems(userInput,QT::QStringMatcher));
-
-    //this->getUI()->friendsList.get
-    //this->getUI()->friendsList
-
-
-
 }
-
-
-
-
 
 void MainWindow::setUser2(user * user)
 {
@@ -409,8 +309,6 @@ editaccountdetailswindow * MainWindow::getADW()
 }
 
 
-
-
 void MainWindow::on_attachFileButton_clicked()
 {
     QString filename = QFileDialog::getOpenFileName(this,"Please elect file to attach","path/home/");
@@ -424,19 +322,7 @@ void MainWindow::on_accountDetailsButton_clicked()
 
     adw = new editaccountdetailswindow(this,this->getUser());
     adw->show();
-
-
-
-
 }
-
-
-
-
-
-
-
-
 
 
 void MainWindow::on_emojiList_itemClicked(QListWidgetItem *item)
@@ -451,12 +337,9 @@ void MainWindow::on_friendsList_itemDoubleClicked(QListWidgetItem *item)
 
     user * newSelectedUser = this->getUserFromDB(x);
 
-
-
     this->setUser2(newSelectedUser);
     this->getUI()->selectedUser->setText(newSelectedUser->getUsername());
     this->setTopic();
-    //this->getUI()->topicName->setText(this->currenttopic->getTopicName());
 }
 
 
@@ -559,14 +442,24 @@ void MainWindow::loadChatHistoryDesc(topic * t) {
         //t -> getPastMessageHistoryAsString().append(topicmessagesFromDB);
         //t->getMessageDatesHistoryAsString().append(messageDatesFromDB);
 
-        for (QString s: topicmessagesFromDB.split(",")) {
+        topicmessagesFromDB.chop(1);
+        QStringList tmdb = topicmessagesFromDB.split(",");
+        messageDatesFromDB.chop(1);
+        QStringList mddb = messageDatesFromDB.split(",");
+
+
+        for(int k=0, s=tmdb.size(), max=(s/2); k<max; k++) tmdb.swap(k,s-(1+k));
+        for(int k=0, s=mddb.size(), max=(s/2); k<max; k++) mddb.swap(k,s-(1+k));
+
+        for (QString s: tmdb) {
+
           t -> getPastMessageHistory().append(s);
           ui -> editLog -> insertPlainText(s);
           ui -> editLog -> insertPlainText("\n");
 
         }
 
-        for (QString s: messageDatesFromDB.split(",")) {
+        for (QString s: mddb) {
           t -> getMessageDatesHistory().append(s);
 
         }
@@ -622,12 +515,7 @@ void MainWindow::setTopic()
     this->on_buttonConnect_clicked();
     this->on_buttonSubscribe_clicked();
     this->loadChatHistory(currenttopic);
-
-
     //here load history of conversation
-
-
-
 
 }
 
@@ -738,8 +626,6 @@ void MainWindow::on_searchButton_clicked()
       this->setUser2(searcheduser);
       this->setTopic();
       this->getUI()->selectedUser->setText(searcheduser->getUsername());
-      //this->getUI()->topicName->setText(this->currenttopic->getTopicName());
-
 
     } else{
 
@@ -749,13 +635,7 @@ void MainWindow::on_searchButton_clicked()
         QMessageBox::information(this, "Failed", "Please input the username first");
     }
 
-
-
-
 }
-
-
-
 
 
 void MainWindow::on_buttonConnect_clicked()
@@ -795,19 +675,6 @@ void MainWindow::on_buttonSubscribe_clicked()
             return;
         }else{
             QMessageBox::information(this, "Success", "Subscribed to a valid connection - now you can send messages  ");
-
-
-
-
-
-
-
-
-
-            /*for (QString s : this->currenttopic->getMessageHistory())
-            {
-                this->getUI()->editLog->ui->insertPlainText(s);
-            }*/
         }
 
 
@@ -853,8 +720,6 @@ void MainWindow::on_searchButton_2_clicked()
     {
               QMessageBox::information(this, "Wait a minute", "Please select the chat to sort messages from first :) :)");
     }
-
-
 
 }
 
