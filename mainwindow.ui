@@ -148,16 +148,6 @@
      </item>
     </layout>
    </widget>
-   <widget class="QPlainTextEdit" name="fileHistory">
-    <property name="geometry">
-     <rect>
-      <x>840</x>
-      <y>90</y>
-      <width>291</width>
-      <height>431</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QLabel" name="fileHistoryLabel">
     <property name="geometry">
      <rect>
@@ -430,6 +420,16 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QListWidget" name="fileHistory">
+    <property name="geometry">
+     <rect>
+      <x>840</x>
+      <y>90</y>
+      <width>291</width>
+      <height>431</height>
+     </rect>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

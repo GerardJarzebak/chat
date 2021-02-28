@@ -161,26 +161,30 @@ void MainWindow::on_changeAvatarButton_clicked() {
 
 void MainWindow::on_sendButton_clicked()
 {
-    if(this->currenttopic != nullptr){
+    if(this->currenttopic != nullptr && !ui->lineEditMessage->text().isEmpty()){
+
+
 
 
         if (m_client->publish(this->currenttopic->getTopicName(), ui->lineEditMessage->text().toUtf8()) == -1)
         {
             QMessageBox::critical(this, QLatin1String("Error"), QLatin1String("Could not publish message - please make sure to hit connect and subscribe first"));
         }else{
+
+
              QString message = ui->lineEditMessage->text() + " " + QDateTime::currentDateTime().toString();
              this->currenttopic->getMessageHistory().append(this->getUser()->getUsername() + " : " + message);
              this->currenttopic->getMessageHistoryAsString().append(this->getUser()->getUsername() + " : " + message +",");
              this->currenttopic->getMessageDatesHistoryAsString().append(QDateTime::currentDateTime().toString() + ",");
              this->currenttopic->getMessageDatesHistory().append(QDateTime::currentDateTime().toString() + ",");
 
-             ui->lineEditMessage->clear();
+             ui->lineEditMessage->clear();}
 
-        }
+
 
     } else{
 
-        QMessageBox::information(this, "Failure", "Please select the topic first");
+        QMessageBox::information(this, "Failure", "Please select the topic and fill in the message first");
     }
 
 
@@ -309,11 +313,95 @@ editaccountdetailswindow * MainWindow::getADW()
 }
 
 
-void MainWindow::on_attachFileButton_clicked()
+
+void MainWindow::reloadFileHistory()
 {
-    QString filename = QFileDialog::getOpenFileName(this,"Please elect file to attach","path/home/");
-    QMessageBox::information(this,"Selected : ",filename);
+    this->getUI()->fileHistory->clear();
+    QSqlQuery query2(QSqlDatabase::database("QMYSQL"));
+    query2.prepare(QString("SELECT * FROM filehistory WHERE topicname = :topicname"));
+    query2.bindValue(":topicname", this->getCurrentTopic()->getTopicName());
+
+
+    if(query2.exec())
+    {
+        while (query2.next()) {
+
+            QListWidgetItem *fileattachment  = new QListWidgetItem(query2.value(3).toString());
+
+
+            ui->fileHistory->addItem(fileattachment);
+        }
+    }else
+    {
+        QMessageBox::information(this, "Failure", "Could not load the attachment list from the database");
+    }
 }
+
+
+void MainWindow::on_attachFileButton_clicked() {
+
+  QString filename = QFileDialog::getOpenFileName(this,tr("Please select file to attach "), "",tr("File (*)"));
+
+  QByteArray filebytearray;
+  QMessageBox::information(this, "Selected : ", filename);
+
+  //possibly add to list of files from the chat
+
+
+  if (!filename.isEmpty())
+  {
+
+      QFile filecontent(filename);
+      //filebytearray = filecontent.readAll();
+
+
+      if(filecontent.open(QIODevice::ReadOnly))
+          {
+            QMessageBox::information(this, "Success", "Was able to load file to bytearray");
+
+              filebytearray = filecontent.readAll();
+              filecontent.close();
+
+          }
+
+      QSqlQuery query(QSqlDatabase::database("QMYSQL"));
+      query.prepare("INSERT INTO filehistory (topicID,topicname,filename,filecontent)"
+        "VALUES (:topicID,:topicname,:filename,:filecontent)");
+      query.bindValue(":topicID", 0); //this -> currenttopic -> getTopicID()
+      query.bindValue(":filecontent", filebytearray, QSql::In | QSql::Binary);
+      query.bindValue(":filename", filename);
+      query.bindValue(":topicname", this->currenttopic->getTopicName());
+
+
+
+
+
+        if (query.exec()) {
+          QMessageBox::information(this, "Success", "A new files has been attached to the chat!");
+
+          this->reloadFileHistory();
+
+        } else {
+
+          QMessageBox::information(this, "Failure", "Problem when inserting a new file into the chat");
+
+        }
+  }
+  else
+  {
+    QMessageBox::information(this, "Error : ", "You haven't selected anything !");
+  }
+
+}
+
+
+
+
+
+
+
+
+
 
 
 void MainWindow::on_accountDetailsButton_clicked()
@@ -344,7 +432,7 @@ void MainWindow::on_friendsList_itemDoubleClicked(QListWidgetItem *item)
 
 
 
-void MainWindow::on_saveChatButton_clicked()
+void MainWindow::saveChat()
 {
     if(!this->currenttopic->getTopicName().isEmpty())
     {
@@ -406,7 +494,7 @@ void MainWindow::loadChatHistory(topic * t) {
         for (QString s: messageDatesFromDB.split(",")) {
           t -> getPastMessageDatesHistory().append(s);
 
-        }
+        }t->setTopicID(idFromDB);
 
       }
 
@@ -462,7 +550,7 @@ void MainWindow::loadChatHistoryDesc(topic * t) {
         for (QString s: mddb) {
           t -> getMessageDatesHistory().append(s);
 
-        }
+        }t->setTopicID(idFromDB);
 
 
 
@@ -502,7 +590,7 @@ void MainWindow::setTopic()
      }
 
      if (this -> currenttopic != nullptr && !this -> currenttopic -> getMessageHistoryAsString().isEmpty()) {
-       this -> on_saveChatButton_clicked();
+       this -> saveChat();
      }
 
     this->currenttopic = new topic(t);
@@ -515,6 +603,7 @@ void MainWindow::setTopic()
     this->on_buttonConnect_clicked();
     this->on_buttonSubscribe_clicked();
     this->loadChatHistory(currenttopic);
+    this->reloadFileHistory();
     //here load history of conversation
 
 }
@@ -712,7 +801,7 @@ void MainWindow::on_searchButton_2_clicked()
 
     if(this->currenttopic != nullptr && !this->getUI()->searchMessageButton->text().isEmpty())
     {
-        srw = new searchresultswindow(this,this->currenttopic,this->getUI()->searchMessageButton->text());
+        srw = new searchresultswindow(this,this->getUser(),this->currenttopic,this->getUI()->searchMessageButton->text());
 
         srw->show();
 
@@ -734,4 +823,40 @@ void MainWindow::on_reportButton_clicked()
     {
               QMessageBox::information(this, "Wait a minute", "Please select the chat first :)");
     }
+}
+
+void MainWindow::on_downloadFileButton_clicked()
+{
+
+         QString nameOfSelectedFile = this->getUI()->fileHistory->currentItem()->text();
+
+         QSqlQuery query(QSqlDatabase::database("QMYSQL"));
+         query.prepare(QString("SELECT * FROM filehistory WHERE topicname = :topicname AND filename = :filename"));
+         query.bindValue(":Topicname", this->currenttopic->getTopicName());
+         query.bindValue(":filename",nameOfSelectedFile);
+
+         if(query.exec())
+         {
+
+             while(query.next()){
+
+
+                 QByteArray fileContentFromDB = query.value(4).toByteArray();
+                 QSaveFile fileImSavingTo(QFileDialog::getSaveFileName(this, tr("Download the file"), "",tr("File (*)")));
+
+
+                 fileImSavingTo.open(QIODevice::WriteOnly);
+                 fileImSavingTo.write(fileContentFromDB);
+                 fileImSavingTo.commit();
+
+                 QMessageBox::information(this, "Success", "File downloaded1");
+
+
+
+              }}else{
+
+             QMessageBox::information(this, "FAILURE", "Problem when executing the query");
+         }
+
+
 }

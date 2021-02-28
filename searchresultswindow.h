@@ -5,6 +5,7 @@
 #include "topic.h"
 #include "QMessageBox"
 #include <QListWidget>
+#include "user.h"
 
 
 namespace Ui {
@@ -27,7 +28,7 @@ public:
      * @param t
      * @param searchedMessage
      */
-    explicit searchresultswindow(QWidget *parent = nullptr,topic * t = nullptr ,QString searchedMessage = "");
+    explicit searchresultswindow(QWidget *parent = nullptr,user * u = nullptr,topic * t = nullptr ,QString searchedMessage = "");
     /**
      * @brief
      *
@@ -70,6 +71,7 @@ public:
      * @param sm
      */
     void setSearchedMessage(QString sm);
+    user * getUser();
 
 private slots:
     /**
@@ -106,6 +108,7 @@ private slots:
 private:
     Ui::searchresultswindow *ui; /**< TODO: describe */
     topic * t; /**< TODO: describe */
+    user * u;
     QString searchedMessage; /**< TODO: describe */
 };
 

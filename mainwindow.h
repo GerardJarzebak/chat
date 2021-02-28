@@ -243,7 +243,7 @@ private slots:
 
 
 
-
+    void saveChat();
 
     /**
      * @brief
@@ -285,7 +285,7 @@ private slots:
      * @brief
      *
      */
-    void on_saveChatButton_clicked();
+    void reloadFileHistory();
 
     /**
      * @brief
@@ -310,6 +310,8 @@ private slots:
      *
      */
     void on_reportButton_clicked();
+
+    void on_downloadFileButton_clicked();
 
 private:
     Ui::MainWindow *ui; /**< TODO: describe */
