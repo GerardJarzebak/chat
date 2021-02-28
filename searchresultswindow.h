@@ -11,37 +11,102 @@ namespace Ui {
 class searchresultswindow;
 }
 
+/**
+ * @brief
+ *
+ */
 class searchresultswindow : public QDialog
 {
     Q_OBJECT
 
 public:
+    /**
+     * @brief
+     *
+     * @param parent
+     * @param t
+     * @param searchedMessage
+     */
     explicit searchresultswindow(QWidget *parent = nullptr,topic * t = nullptr ,QString searchedMessage = "");
+    /**
+     * @brief
+     *
+     */
     ~searchresultswindow();
+    /**
+     * @brief
+     *
+     * @return topic
+     */
     topic * getTopic();
+    /**
+     * @brief
+     *
+     * @return QString
+     */
     QString getSearchedMessage();
+    /**
+     * @brief
+     *
+     * @return Ui::searchresultswindow
+     */
     Ui::searchresultswindow * getUI();
+    /**
+     * @brief
+     *
+     */
     void saveEditsToDB();
 
 
+    /**
+     * @brief
+     *
+     * @param t
+     */
     void setTopic(topic * t);
+    /**
+     * @brief
+     *
+     * @param sm
+     */
     void setSearchedMessage(QString sm);
 
 private slots:
+    /**
+     * @brief
+     *
+     */
     void on_backToMainWindow_clicked();
 
+    /**
+     * @brief
+     *
+     * @param item
+     */
     void on_listOfSearchedMessages_itemDoubleClicked(QListWidgetItem *item);
 
+    /**
+     * @brief
+     *
+     */
     void on_viewMessageButton_clicked();
 
+    /**
+     * @brief
+     *
+     */
     void on_editMessageButton_clicked();
 
+    /**
+     * @brief
+     *
+     */
     void on_deleteMessageButton_clicked();
 
 private:
-    Ui::searchresultswindow *ui;
-    topic * t;
-    QString searchedMessage;
+    Ui::searchresultswindow *ui; /**< TODO: describe */
+    topic * t; /**< TODO: describe */
+    QString searchedMessage; /**< TODO: describe */
 };
 
 #endif // SEARCHRESULTSWINDOW_H

@@ -99,13 +99,104 @@ void searchresultswindow::on_viewMessageButton_clicked()
 
 void searchresultswindow::on_editMessageButton_clicked()
 {
-
+/*
     if(this->getUI()->listOfSearchedMessages->currentItem() != nullptr){
            QString selectedMessage = this->getUI()->listOfSearchedMessages->currentItem()->text();
            QInputDialog * id = new QInputDialog();
            QString userInput = id -> getText(this, "Editing highlighted message", "Please edit the message and press ok to save it");
 
            this->getUI()->listOfSearchedMessages->currentItem()->setText(userInput);
+
+
+
+
+
+
+           QSqlQuery query(QSqlDatabase::database("QMYSQL"));
+           query.prepare("SELECT * from topics where topicname = :topicname ORDER BY id  ASC");
+           query.bindValue(":topicname", t -> getTopicName());
+
+
+
+
+
+           if (query.exec()) {
+             while (query.next()) {
+
+               QString topicnameFromDB = query.value(1).toString();
+
+               if (t -> getTopicName() == topicnameFromDB) {
+
+
+
+
+
+
+
+
+                 int idFromDB = query.value(0).toInt();
+                 QString user1FromDb = query.value(2).toString();
+                 QString user2FromDb = query.value(3).toString();
+                 QString topicmessagesFromDB = query.value(4).toString();
+                 QString messageDatesFromDB = query.value(5).toString();
+
+
+
+                 for(QString s : topicmessagesFromDB.split(","))
+                 {
+
+                     QString str("this is a string"); // The initial string.
+                     QString subStr("is"); // String to replace.
+                     QString newStr("at"); // Replacement string.
+
+                     str.replace(str.indexOf(subStr), subStr.size(), newStr);
+
+
+
+                     if(s == selectedMessage){
+                         topicmessagesFromDB.split(",").at(topicmessagesFromDB.split(",").indexOf(s)) = userInput;
+                     }
+
+
+                 }
+
+
+
+
+                 t -> getPastMessageHistoryAsString().append(topicmessagesFromDB);
+                 t->getMessageDatesHistoryAsString().append(messageDatesFromDB);
+
+                 for (QString s: topicmessagesFromDB.split(",")) {
+                   t -> getPastMessageHistory().append(s);
+                   ui -> editLog -> insertPlainText(s);
+                   ui -> editLog -> insertPlainText("\n");
+
+                 }
+
+                 for (QString s: messageDatesFromDB.split(",")) {
+                   t -> getPastMessageDatesHistory().append(s);
+
+                 }
+
+               }
+
+             }
+
+           } else {
+
+             QMessageBox::information(this, "Failure", "The database query to load chat history didnt run properly");
+           }
+
+
+
+
+
+
+
+
+
+
+
 
            bool flag = true;
            int a = this->getTopic()->getMessageDatesHistory().indexOf(selectedMessage);
@@ -142,7 +233,7 @@ void searchresultswindow::on_editMessageButton_clicked()
            QMessageBox::information(this, "No message highlighted", "Please highlight the message you would like to edit");
        }
 
-
+*/
 }
 
 
@@ -176,7 +267,7 @@ void searchresultswindow::saveEditsToDB()
 void searchresultswindow::on_deleteMessageButton_clicked()
 
 
-{      if(this->getUI()->listOfSearchedMessages->currentItem() != nullptr){
+{     /* if(this->getUI()->listOfSearchedMessages->currentItem() != nullptr){
        QString selectedMessage = this->getUI()->listOfSearchedMessages->currentItem()->text();
 
 
@@ -232,8 +323,10 @@ void searchresultswindow::on_deleteMessageButton_clicked()
         QMessageBox::information(this, "No message highlighted", "Please highlight the message you would like to delete");
     }
 
-    this->saveEditsToDB();
+    this->saveEditsToDB();*/
+
 }
+
 
 
 

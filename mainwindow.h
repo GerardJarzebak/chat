@@ -70,88 +70,256 @@ namespace Ui {
 class MainWindow;
 }
 
+/**
+ * @brief
+ *
+ */
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
+    /**
+     * @brief
+     *
+     * @param parent
+     */
     explicit MainWindow(QWidget *parent = nullptr);
+    /**
+     * @brief
+     *
+     */
     ~MainWindow();
 
 public slots:
+    /**
+     * @brief
+     *
+     * @param p
+     */
     void setClientPort(int p);
+    /**
+     * @brief
+     *
+     * @param user
+     */
     void setUser(user * user);
+    /**
+     * @brief
+     *
+     * @return user
+     */
     user* getUser();
+    /**
+     * @brief
+     *
+     * @param user
+     */
     void setUser2(user * user);
+    /**
+     * @brief
+     *
+     * @return user
+     */
     user* getUser2();
+    /**
+     * @brief
+     *
+     * @return Ui::MainWindow
+     */
     Ui::MainWindow * getUI();
+    /**
+     * @brief
+     *
+     * @param adw
+     */
     void setADW( editaccountdetailswindow * adw);
+    /**
+     * @brief
+     *
+     * @return editaccountdetailswindow
+     */
     editaccountdetailswindow * getADW();
+    /**
+     * @brief
+     *
+     */
     void setEmojiList();
+    /**
+     * @brief
+     *
+     */
     void setTopic();
+    /**
+     * @brief
+     *
+     * @param username
+     * @return user
+     */
     user* getUserFromDB(QString username);
+    /**
+     * @brief
+     *
+     * @param t
+     */
     void loadChatHistory(topic *t);
+    /**
+     * @brief
+     *
+     * @param t
+     */
     void loadChatHistoryDesc(topic * t);
+    /**
+     * @brief
+     *
+     * @return topic
+     */
     topic* getCurrentTopic();
 
 private slots:
 
 
+    /**
+     * @brief
+     *
+     */
     void updateLogStateChange();
 
+    /**
+     * @brief
+     *
+     */
     void on_RemoveFriendButton_clicked();
 
+    /**
+     * @brief
+     *
+     */
     void on_addFriendButton_clicked();
 
+    /**
+     * @brief
+     *
+     */
     void on_attachFileButton_clicked();
 
+    /**
+     * @brief
+     *
+     */
     void on_accountDetailsButton_clicked();
 
+    /**
+     * @brief
+     *
+     */
     void on_searchButton_clicked();
 
+    /**
+     * @brief
+     *
+     */
     void brokerDisconnected();
 
+    /**
+     * @brief
+     *
+     */
     void on_changeAvatarButton_clicked();
 
+    /**
+     * @brief
+     *
+     * @param item
+     */
     void on_emojiList_itemClicked(QListWidgetItem *item);
 
+    /**
+     * @brief
+     *
+     * @param item
+     */
     void on_friendsList_itemDoubleClicked(QListWidgetItem *item);
 
 
 
 
 
+    /**
+     * @brief
+     *
+     */
     void subcribe();
 
+    /**
+     * @brief
+     *
+     */
     void connectToTopic();
 
+    /**
+     * @brief
+     *
+     */
     void on_sendButton_clicked();
 
+    /**
+     * @brief
+     *
+     */
     void on_quitButton_clicked();
 
+    /**
+     * @brief
+     *
+     */
     void on_buttonConnect_clicked();
 
+    /**
+     * @brief
+     *
+     */
     void on_buttonSubscribe_clicked();
 
+    /**
+     * @brief
+     *
+     */
     void on_saveChatButton_clicked();
 
+    /**
+     * @brief
+     *
+     */
     void on_ascSortButton_clicked();
 
+    /**
+     * @brief
+     *
+     */
     void on_descSortButton_clicked();
 
+    /**
+     * @brief
+     *
+     */
     void on_searchButton_2_clicked();
 
+    /**
+     * @brief
+     *
+     */
     void on_reportButton_clicked();
 
 private:
-    Ui::MainWindow *ui;
-    QMqttClient *m_client;
-    user *u;
-    user *u2;
-    editaccountdetailswindow * adw;
-    topic *currenttopic;
-    searchresultswindow * srw;
-    reportwindow * rw;
+    Ui::MainWindow *ui; /**< TODO: describe */
+    QMqttClient *m_client; /**< TODO: describe */
+    user *u; /**< TODO: describe */
+    user *u2; /**< TODO: describe */
+    editaccountdetailswindow * adw; /**< TODO: describe */
+    topic *currenttopic; /**< TODO: describe */
+    searchresultswindow * srw; /**< TODO: describe */
+    reportwindow * rw; /**< TODO: describe */
 
 };
 
